@@ -61,11 +61,12 @@ func spawn_player(id):
 	player.set_name(str(id))
 	add_child(player)
 
-remote func update_pos_server(pos, player_id):
+remote func update_pos_server(pos, facing, player_id):
 	var player = get_node(str(player_id))
 	player.set_translation(pos)
+	player.rotation_degrees.y = facing
 	
-	rpc_unreliable("update_pos_client", player.get_translation(), player_id)
+	rpc_unreliable("update_pos_client", player.get_translation(), player.rotation_degrees.y, player_id)
 
 remote func print_something():
 	print("SERVER PRINTING SOMETHING, MEANS PACKET RECEIVED")
