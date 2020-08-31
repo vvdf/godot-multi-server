@@ -40,7 +40,7 @@ remote func register_player_server(id, name):
 	print("Sending Register Player call to Clients")
 	players[id] = {}
 	players[id]["name"] = name
-	players[id]["pos"] = Vector3(3, 1, 3)
+	players[id]["pos"] = Vector3(0, 0, 0)
 	spawn_player(id)
 	
 	rpc("register_player_client", id, "Client")
@@ -61,9 +61,9 @@ func spawn_player(id):
 	player.set_name(str(id))
 	add_child(player)
 
-remote func update_pos_server(movement, player_id):
+remote func update_pos_server(pos, player_id):
 	var player = get_node(str(player_id))
-	player.translate(movement)
+	player.set_translation(pos)
 	
 	rpc_unreliable("update_pos_client", player.get_translation(), player_id)
 
